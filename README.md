@@ -37,7 +37,6 @@ Por políticas de seguridad de directorios de Google Cloud (IAM), cualquier cuen
 
 ### Mitigación y Validación:
 *   **En Producción:** El administrador de TI de Grupo LyN ejecutará este script de forma nativa desde su propia cuenta empresarial dentro de su Google Workspace, por lo que el script correrá de manera continua y exitosa sin ninguna restricción de seguridad.
-*   **Para Pruebas del Candidato:** Se diseñó y validó la lógica de forma exitosa mediante una hoja de administración y un cliente de prueba de propiedad 100% personal, comprobando que la inyección de stubs, la creación de contenedores y la escritura de estados `✅ Éxito` operan de forma correcta una vez removidas las restricciones de red empresarial.
 
 ---
 
