@@ -2,12 +2,14 @@
  * @file Deployment.gs
  * @description Script para automatizar la actualización masiva de hojas de clientes.
  * Vincula programáticamente cada hoja de cliente a la biblioteca compartida centralizada.
- * Versión optimizada con escáner inteligente de pestañas tolerante a espacios ocultos.
+ * Versión optimizada con escáner inteligente de pestañas tolerante a espacios ocultos,
+ * menú de ejecución rápida integrado y estándares de ES6 (const/let).
  */
 
-// ID de prueba de biblioteca
+// ID de prueba de la biblioteca maestra de la plantilla original
 const MASTER_LIBRARY_ID = "1KeQgiXH8pWkKLoAvfNvVFsUwhP8QFcidSZt-kNlQWhn9h-lCTJsntd-l";
 
+// Código autogenerado (stub) que se inyectará en cada cliente
 const CLIENT_STUB_CODE = `
 // Código autogenerado para enlazar con la Biblioteca Maestra
 function onOpen() {
@@ -26,6 +28,21 @@ function setNewAdminCode() {
   MasterLibrary.setNewAdminCode();
 }
 `;
+
+/**
+ * Se ejecuta automáticamente al abrir la hoja de administración.
+ * Crea un menú personalizado en la barra superior para lanzar el despliegue con un clic.
+ */
+function onOpen() {
+  try {
+    const ui = SpreadsheetApp.getUi();
+    ui.createMenu('Despliegue 🛠️')
+      .addItem('🚀 Ejecutar Despliegue Masivo', 'deployToAllClients')
+      .addToUi();
+  } catch (e) {
+    Logger.log("Aviso: No se pudo crear el menú en este contexto.");
+  }
+}
 
 /**
  * Recorre la pestaña de Clientes, busca las URLs de la columna A e inyecta la solución.
@@ -66,12 +83,9 @@ function deployToAllClients() {
     
     try {
       const spreadsheetId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)[1];
-      
-      // Crea el contenedor del proyecto de Apps Script en la hoja destino si no existe
       const scriptId = getOrCreateBoundScript(spreadsheetId);
       
       if (scriptId) {
-        // Inyecta el manifiesto con la biblioteca configurada y el stub de código
         updateScriptContent(scriptId);
         successCount++;
         sheet.getRange(index + 2, 2).setValue(`✅ Éxito: ${new Date().toLocaleString()}`);
@@ -89,7 +103,7 @@ function deployToAllClients() {
 }
 
 /**
- * Función auxiliar para evitar caídas de script si se ejecuta fuera del entorno UI
+ * Función auxiliar para evitar caídas de script si se ejecuta fuera del entorno UI.
  */
 function safeAlert(message) {
   try {
@@ -99,6 +113,9 @@ function safeAlert(message) {
   }
 }
 
+/**
+ * Crea o recupera un proyecto de Apps Script vinculado a la hoja del cliente.
+ */
 function getOrCreateBoundScript(spreadsheetId) {
   const token = ScriptApp.getOAuthToken();
   const url = "https://script.googleapis.com/v1/projects";
@@ -127,6 +144,9 @@ function getOrCreateBoundScript(spreadsheetId) {
   }
 }
 
+/**
+ * Sobrescribe el contenido de la hoja de cálculo del cliente con la biblioteca y el stub.
+ */
 function updateScriptContent(scriptId) {
   const token = ScriptApp.getOAuthToken();
   const url = `https://script.googleapis.com/v1/projects/${scriptId}/content`;
@@ -138,7 +158,7 @@ function updateScriptContent(scriptId) {
         {
           userSymbol: "MasterLibrary",
           libraryId: MASTER_LIBRARY_ID,
-          version: "39", // Versión estable publicada original
+          version: "39",
           developmentMode: true
         }
       ]
