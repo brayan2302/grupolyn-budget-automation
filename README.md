@@ -26,13 +26,10 @@ Este proyecto contiene la solución de automatización y control financiero desa
 
 ```directory
 grupolyn-budget-automation/
-│
-├── src/
-│   ├── Code.js             # Lógica del menú de seguridad y generador de reportes
-│   └── Deployment.js       # Script maestro de actualización masiva (API REST)
-│
-├── appsscript.json         # Archivo de manifiesto unificado con OAuth Scopes
-└── README.md               # Documentación y portada del proyecto
+├── Code.gs             # Lógica del menú de seguridad y reportes mensuales
+├── Deployment.gs       # Script maestro de actualización masiva (API REST)
+├── appsscript.json     # Archivo de manifiesto unificado con OAuth Scopes
+└── README.md           # Documentación y portada del proyecto
 
 ⚙️ Requisitos de Configuración e Instalación
 Para que el script de despliegue masivo (Deployment.gs) pueda realizar llamadas a la API de Google de forma programática, se requiere realizar los siguientes ajustes en la cuenta del Administrador:
