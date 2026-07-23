@@ -33,3 +33,18 @@ grupolyn-budget-automation/
 │
 ├── appsscript.json         # Archivo de manifiesto unificado con OAuth Scopes
 └── README.md               # Documentación y portada del proyecto
+
+⚙️ Requisitos de Configuración e Instalación
+Para que el script de despliegue masivo (Deployment.gs) pueda realizar llamadas a la API de Google de forma programática, se requiere realizar los siguientes ajustes en la cuenta del Administrador:
+Habilitar la API de Apps Script: Ingrese a script.google.com/home/settings y active el interruptor global API de Google Apps Script a la posición Habilitado (On).
+Configurar los OAuth Scopes: Asegúrese de tener el archivo de manifiesto appsscript.json configurado en su proyecto con los siguientes ámbitos de seguridad mínimos autorizados:
+code
+JSON
+"oauthScopes": [
+  "https://www.googleapis.com/auth/spreadsheets",
+  "https://www.googleapis.com/auth/script.projects",
+  "https://www.googleapis.com/auth/drive",
+  "https://www.googleapis.com/auth/documents",
+  "https://www.googleapis.com/auth/calendar",
+  "https://www.googleapis.com/auth/script.external_request"
+]
