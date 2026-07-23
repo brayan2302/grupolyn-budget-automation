@@ -1,6 +1,6 @@
 /**
  * @file Code.gs
- * @description Script completo para la plantilla de planificación financiera PROSPR (Grupo LyN).
+ * @description Lógica del menú de seguridad, generador de reportes y borradores de correo.
  * Escrito usando estándares modernos de JavaScript ES6 (const y let) y tolerante a fallas de contexto.
  */
 
@@ -9,11 +9,10 @@
  * Inicializa la clave por defecto en el primer login y crea el menú de forma segura.
  */
 function onOpen() {
-  // try-catch preventivo para evitar fallas si se ejecuta manualmente desde el editor
   try {
     addAdminMenuWithAccessControl();
   } catch (e) {
-    Logger.log("Aviso: onOpen se ejecutó desde el editor de código (entorno headless). El menú se cargará al abrir la hoja de cálculo.");
+    Logger.log("Aviso: onOpen se ejecutó fuera de la interfaz.");
   }
 
   const userProperties = PropertiesService.getUserProperties();
@@ -32,7 +31,7 @@ function addAdminMenuWithAccessControl() {
       .addItem('Unlock Admin Menu', 'showAdminPrompt')
       .addToUi();
   } catch (e) {
-    Logger.log("Aviso: getUi() no está disponible en este contexto (entorno headless).");
+    Logger.log("Aviso: getUi() no está disponible en este contexto.");
   }
 }
 
@@ -73,14 +72,13 @@ function verifyAdminCode(code) {
 }
 
 /**
- * Muestra el menú de administración completo con todas las opciones disponibles (Unificado).
+ * Muestra el menú de administración completo con todas las opciones disponibles para el cliente.
  */
 function addUnlockedAdminMenu() {
   try {
     const ui = SpreadsheetApp.getUi();
     ui.createMenu('Admin')
       .addItem('Monthly Comparative Report', 'runMonthlyComparativeReport')
-      .addItem('Deploy Updates to Clients', 'deployToAllClients') // Opción integrada de despliegue
       .addItem('Set Admin Code', 'setNewAdminCode')
       .addItem('Lock Admin Menu', 'resetAdminMenu')
       .addToUi();
@@ -343,7 +341,7 @@ function runMonthlyComparativeReport() {
   // 1. Borrador en texto plano original
   generateReportAsEmailDraft(finalReportText, emailSubject);
 
-  // 2. NUEVO: Borrador en HTML Premium corporativo de Grupo LyN (usando backticks V8)
+  // 2. Borrador en HTML Premium corporativo de Grupo LyN
   generateBrandedHtmlEmailDraft(allCategoriesData, month, year, bomStr, eomStr, DEVIATION_THRESHOLD);
 }
 
